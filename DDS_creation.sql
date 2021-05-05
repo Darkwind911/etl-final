@@ -21,7 +21,30 @@ create table dds.dim_tariff
 fare_conditional varchar(50) not null
 )
 
---create table dds.dim_calendar
+create table dds.dim_calendar 
+as 
+with dates as
+( select dd::date as dt
+from generate_series('2016-08-01'::timestamp,
+						'2016-12-01'::timestamp,
+						'1 day'::interval) dd
+)
+select 
+to_char(dt,'YYYYMMDD')::int as id ,
+dt as date,
+to_char(dt,'YYYY-MM-DD') as ansi_date,
+date_part('isodow',dt)::int as day, 
+date_part('week',dt)::int as week_number, 
+date_part('month',dt)::int as month_number, 
+date_part('year',dt)::int as year_number
+from dates
+order by dt
+
+alter table dds.dim_calendar  add primary key (id)
+
+select * from dds.dim_calendar 
+
+
 
 create table dds.dim_passenger
 (passenger_id serial primary key,
@@ -33,10 +56,12 @@ tarif int,
 costs int
 )
 
-drop table dds.dim_passenger
+drop table dds.dim_calendar 
+
 
 create table dds.fact_flights
 (passenger int references dds.dim_passenger (passenger_id)  ,
+action_day int references dds.dim_calendar (id),
 date_depature timestamp,
 date_arrival timestamp,
 delay_depature_sec int,
