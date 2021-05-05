@@ -1,11 +1,13 @@
 create schema dds
- 
+
 create  table dds.dim_aircrafts
 (aircraft_id serial primary key,
 aircraft_code varchar(4) not null,
 model varchar(50) not null, 
 aircraft_range int not null, 
 seats_total int  )
+
+
 
 create table dds.dim_airports
 (airport_id serial primary key,
@@ -15,7 +17,7 @@ city varchar(100) not null,
 timezone varchar(100) not null
 )
 
-select * from dds.dim_tariff
+select * from dds.dim_aircrafts
 
 truncate table dds.dim_aircrafts
 
