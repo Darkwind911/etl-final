@@ -5,8 +5,7 @@ create  table dds.dim_aircrafts
 aircraft_code varchar(4) not null,
 model varchar(50) not null, 
 aircraft_range int not null, 
-seats_econom int ,
-seats_bussiness int )
+seats_total int  )
 
 create table dds.dim_airports
 (airport_id serial primary key,
@@ -16,9 +15,18 @@ city varchar(100) not null,
 timezone varchar(100) not null
 )
 
+select * from dds.dim_tariff
+
+truncate table dds.dim_aircrafts
+
+drop table dds.dim_aircrafts
+
+drop table dds.dim_tariff
+
+
 create table dds.dim_tariff
 (tarif_id serial primary key,
-fare_conditional varchar(50) not null
+tarif varchar(50) not null
 )
 
 create table dds.dim_calendar 
@@ -42,8 +50,8 @@ order by dt
 
 alter table dds.dim_calendar  add primary key (id)
 
-select * from dds.dim_calendar 
-
+select * from dds.dim_airports
+drop table dds.fact_flights
 
 
 create table dds.dim_passenger
@@ -56,7 +64,7 @@ tarif int,
 costs int
 )
 
-drop table dds.dim_calendar 
+drop table dds.fact_flights
 
 
 create table dds.fact_flights
