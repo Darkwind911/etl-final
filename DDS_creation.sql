@@ -1,5 +1,7 @@
 create schema dds
 
+drop table dds.dim_aircrafts cascade
+
 create  table dds.dim_aircrafts
 (aircraft_id serial primary key,
 aircraft_code varchar(4) not null,
@@ -7,7 +9,7 @@ model varchar(50) not null,
 aircraft_range int not null, 
 seats_total int  )
 
-
+drop table dds.dim_airports cascade
 
 create table dds.dim_airports
 (airport_id serial primary key,
@@ -17,14 +19,7 @@ city varchar(100) not null,
 timezone varchar(100) not null
 )
 
-select * from dds.dim_airports
-
-truncate table dds.dim_aircrafts
-
-drop table dds.dim_airports
-
-drop table dds.dim_tariff
-
+drop table dds.dim_tariff cascade
 
 create table dds.dim_tariff
 (tarif_id serial primary key,
@@ -52,6 +47,7 @@ order by dt
 
 alter table dds.dim_calendar  add primary key (id)
 
+drop table dds.dim_passenger cascade
 
 create table dds.dim_passenger
 (passenger_id serial primary key,
@@ -63,13 +59,12 @@ tarif int,
 costs int
 )
 
-drop table dds.fact_flights
-
-select * from dds.dim_passenger
+drop table dds.fact_flights cascade
 
 create table dds.fact_flights
 (passenger int references dds.dim_passenger (passenger_id) ,
-action_day int references dds.dim_calendar (id),
+arrival_date_id int references dds.dim_calendar (id),
+depature_date_id int references dds.dim_calendar (id),
 date_depature timestamp not null,
 date_arrival timestamp not null,
 delay_depature_sec int not null,
