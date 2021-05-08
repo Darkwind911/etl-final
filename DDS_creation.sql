@@ -17,11 +17,11 @@ city varchar(100) not null,
 timezone varchar(100) not null
 )
 
-select * from dds.dim_aircrafts
+select * from dds.dim_airports
 
 truncate table dds.dim_aircrafts
 
-drop table dds.dim_aircrafts
+drop table dds.dim_airports
 
 drop table dds.dim_tariff
 
@@ -52,29 +52,27 @@ order by dt
 
 alter table dds.dim_calendar  add primary key (id)
 
-select * from dds.dim_airports
-drop table dds.fact_flights
-
 
 create table dds.dim_passenger
 (passenger_id serial primary key,
 passenger_name varchar(200) not null,
-ticket_no int not null,
+flight_id int not null, 
+ticket_no varchar(100) not null,
 seat_no varchar(5),
-contact_date json,
 tarif int,
 costs int
 )
 
 drop table dds.fact_flights
 
+select * from dds.dim_passenger
 
 create table dds.fact_flights
-(passenger int references dds.dim_passenger (passenger_id)  ,
+(passenger int references dds.dim_passenger (passenger_id) ,
 action_day int references dds.dim_calendar (id),
-date_depature timestamp,
-date_arrival timestamp,
-delay_depature_sec int,
+date_depature timestamp not null,
+date_arrival timestamp not null,
+delay_depature_sec int not null,
 delay_arrival_sec int,
 aircraft_id int references dds.dim_aircrafts (aircraft_id) ,
 airport_depature int references  dds.dim_airports(airport_id), 
