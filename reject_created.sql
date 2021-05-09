@@ -28,15 +28,16 @@ tarif varchar(50)
 
 drop table rejected.dim_passenger
 
+select * from rejected.dim_passenger dp 
+
 create table rejected.dim_passenger
-(passenger_id serial,
+(passenger_id serial ,
 passenger_name varchar(200) ,
-flight_id int , 
 ticket_no varchar(100) ,
-seat_no varchar(5),
-tarif int,
-costs int
+seat_no varchar(5) 
 )
+
+select * from rejected.fact_flights
 
 drop table rejected.fact_flights
 
