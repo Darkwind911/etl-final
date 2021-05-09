@@ -430,7 +430,7 @@
     <created_date>2021/05/07 15:09:49.191</created_date>
     <modified_user>-</modified_user>
     <modified_date>2021/05/07 15:09:49.191</modified_date>
-    <key_for_session_key/>
+    <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
@@ -539,23 +539,8 @@
   </connection>
   <order>
     <hop>
-      <from>Запрос данных из измерения</from>
-      <to>Join rows (cartesian product)</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Запрос данных из сорсовой базы</from>
-      <to>Join rows (cartesian product)</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Join rows (cartesian product)</from>
-      <to>Data validator</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Data validator</from>
-      <to>Загрузка данных в измерение</to>
+      <to>Загрузка данных в Stage</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -563,7 +548,213 @@
       <to>Запись ошибок в таблицу ошибок</to>
       <enabled>Y</enabled>
     </hop>
+    <hop>
+      <from>Загрузка данных в Stage</from>
+      <to>Загрузка данных в измерение</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Запрос данных из сорсовой базы</from>
+      <to>Data validator</to>
+      <enabled>Y</enabled>
+    </hop>
   </order>
+  <step>
+    <name>Data validator</name>
+    <type>Validator</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <validate_all>Y</validate_all>
+    <concat_errors>N</concat_errors>
+    <concat_separator>|</concat_separator>
+    <validator_field>
+      <name>passenger_name</name>
+      <validation_name>Passenger</validation_name>
+      <max_length/>
+      <min_length/>
+      <null_allowed>N</null_allowed>
+      <only_null_allowed>N</only_null_allowed>
+      <only_numeric_allowed>N</only_numeric_allowed>
+      <data_type>String</data_type>
+      <data_type_verified>Y</data_type_verified>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <max_value/>
+      <min_value/>
+      <start_string/>
+      <end_string/>
+      <start_string_not_allowed/>
+      <end_string_not_allowed/>
+      <regular_expression/>
+      <regular_expression_not_allowed/>
+      <error_code/>
+      <error_description/>
+      <is_sourcing_values>N</is_sourcing_values>
+      <sourcing_step/>
+      <sourcing_field/>
+      <allowed_value/>
+    </validator_field>
+    <validator_field>
+      <name>seat_no</name>
+      <validation_name>Seat</validation_name>
+      <max_length/>
+      <min_length/>
+      <null_allowed>N</null_allowed>
+      <only_null_allowed>N</only_null_allowed>
+      <only_numeric_allowed>N</only_numeric_allowed>
+      <data_type>String</data_type>
+      <data_type_verified>Y</data_type_verified>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <max_value/>
+      <min_value/>
+      <start_string/>
+      <end_string/>
+      <start_string_not_allowed/>
+      <end_string_not_allowed/>
+      <regular_expression/>
+      <regular_expression_not_allowed/>
+      <error_code/>
+      <error_description/>
+      <is_sourcing_values>N</is_sourcing_values>
+      <sourcing_step/>
+      <sourcing_field/>
+      <allowed_value/>
+    </validator_field>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>640</xloc>
+      <yloc>160</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Загрузка данных в Stage</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>dds</connection>
+    <schema>stage</schema>
+    <table>dim_passenger</table>
+    <commit>10000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>N</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>Y</return_keys>
+    <return_field>passenger_id</return_field>
+    <fields>
+      <field>
+        <column_name>passenger_name</column_name>
+        <stream_name>passenger_name</stream_name>
+      </field>
+      <field>
+        <column_name>ticket_no</column_name>
+        <stream_name>ticket_no</stream_name>
+      </field>
+      <field>
+        <column_name>seat_no</column_name>
+        <stream_name>seat_no</stream_name>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>864</xloc>
+      <yloc>160</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Запись ошибок в таблицу ошибок</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>dds</connection>
+    <schema>rejected</schema>
+    <table>dim_passenger</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>N</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>Y</return_keys>
+    <return_field>error_id</return_field>
+    <fields>
+      <field>
+        <column_name>passenger_name</column_name>
+        <stream_name>passenger_name</stream_name>
+      </field>
+      <field>
+        <column_name>ticket_no</column_name>
+        <stream_name>ticket_no</stream_name>
+      </field>
+      <field>
+        <column_name>seat_no</column_name>
+        <stream_name>seat_no</stream_name>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>848</xloc>
+      <yloc>352</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
   <step>
     <name>Запрос данных из сорсовой базы</name>
     <type>TableInput</type>
@@ -577,14 +768,10 @@
     </partitioning>
     <connection>booking</connection>
     <sql>select  passenger_name ,		
-		tf.flight_id,
 		tf.ticket_no ,
-		seat_no,
-		fare_conditions,
-		amount
+		seat_no
 from bookings.ticket_flights tf   
- join (
-select ticket_no, flight_id, seat_no from bookings.boarding_passes ) bp on tf.flight_id = bp.flight_id and tf.ticket_no = bp.ticket_no
+ join (select ticket_no, flight_id, seat_no from bookings.boarding_passes ) bp on tf.flight_id = bp.flight_id and tf.ticket_no = bp.ticket_no
 left join ( select ticket_no , passenger_name from bookings.tickets) t on t. ticket_no=tf.ticket_no </sql>
     <limit>0</limit>
     <lookup/>
@@ -602,29 +789,6 @@ left join ( select ticket_no , passenger_name from bookings.tickets) t on t. tic
         <origin>Запрос данных из сорсовой базы</origin>
         <comments>passenger_name</comments>
         <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Minsk</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Integer</type>
-        <storagetype>normal</storagetype>
-        <name>flight_id</name>
-        <length>9</length>
-        <precision>0</precision>
-        <origin>Запрос данных из сорсовой базы</origin>
-        <comments>flight_id</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
         <currency_symbol/>
@@ -688,116 +852,11 @@ left join ( select ticket_no , passenger_name from bookings.tickets) t on t. tic
       <value-meta>
         <type>String</type>
         <storagetype>normal</storagetype>
-        <name>fare_conditions</name>
-        <length>10</length>
-        <precision>-1</precision>
-        <origin>Запрос данных из сорсовой базы</origin>
-        <comments>fare_conditions</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Minsk</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Number</type>
-        <storagetype>normal</storagetype>
-        <name>amount</name>
-        <length>10</length>
-        <precision>2</precision>
-        <origin>Запрос данных из сорсовой базы</origin>
-        <comments>amount</comments>
-        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Minsk</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-    </row-meta>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>200</xloc>
-      <yloc>100</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Запрос данных из измерения</name>
-    <type>TableInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>dds</connection>
-    <sql>select * from dds.dim_tariff dt 
-</sql>
-    <limit>0</limit>
-    <lookup/>
-    <execute_each_row>N</execute_each_row>
-    <variables_active>N</variables_active>
-    <lazy_conversion_active>N</lazy_conversion_active>
-    <cached_row_meta_active>N</cached_row_meta_active>
-    <row-meta>
-      <value-meta>
-        <type>Integer</type>
-        <storagetype>normal</storagetype>
-        <name>tarif_id</name>
-        <length>9</length>
+        <name>contact_data</name>
+        <length>-1</length>
         <precision>0</precision>
-        <origin>Table input</origin>
-        <comments>tarif_id</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Minsk</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>tarif</name>
-        <length>50</length>
-        <precision>-1</precision>
-        <origin>Table input</origin>
-        <comments>tarif</comments>
+        <origin>Запрос данных из сорсовой базы</origin>
+        <comments>contact_data</comments>
         <conversion_Mask/>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -823,51 +882,14 @@ left join ( select ticket_no , passenger_name from bookings.tickets) t on t. tic
       </output>
     </remotesteps>
     <GUI>
-      <xloc>192</xloc>
-      <yloc>224</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Join rows (cartesian product)</name>
-    <type>JoinRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <cache_size>500</cache_size>
-    <main>Запрос данных из сорсовой базы</main>
-    <compare>
-      <condition>
-        <negated>N</negated>
-        <leftvalue>tarif</leftvalue>
-        <function>=</function>
-        <rightvalue>fare_conditions</rightvalue>
-      </condition>
-    </compare>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>416</xloc>
+      <xloc>176</xloc>
       <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
     <name>Загрузка данных в измерение</name>
-    <type>TableOutput</type>
+    <type>PGBulkLoader</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -879,46 +901,31 @@ left join ( select ticket_no , passenger_name from bookings.tickets) t on t. tic
     <connection>dds</connection>
     <schema>dds</schema>
     <table>dim_passenger</table>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>N</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>Y</return_keys>
-    <return_field>passenger_id</return_field>
-    <fields>
-      <field>
-        <column_name>passenger_name</column_name>
-        <stream_name>passenger_name</stream_name>
-      </field>
-      <field>
-        <column_name>flight_id</column_name>
-        <stream_name>flight_id</stream_name>
-      </field>
-      <field>
-        <column_name>ticket_no</column_name>
-        <stream_name>ticket_no</stream_name>
-      </field>
-      <field>
-        <column_name>seat_no</column_name>
-        <stream_name>seat_no</stream_name>
-      </field>
-      <field>
-        <column_name>tarif</column_name>
-        <stream_name>tarif_id</stream_name>
-      </field>
-      <field>
-        <column_name>costs</column_name>
-        <stream_name>amount</stream_name>
-      </field>
-    </fields>
+    <load_action>INSERT</load_action>
+    <dbname_override/>
+    <enclosure>"</enclosure>
+    <delimiter>;</delimiter>
+    <stop_on_error>N</stop_on_error>
+    <mapping>
+      <stream_name>passenger_name</stream_name>
+      <field_name>passenger_name</field_name>
+      <date_mask/>
+    </mapping>
+    <mapping>
+      <stream_name>ticket_no</stream_name>
+      <field_name>ticket_no</field_name>
+      <date_mask/>
+    </mapping>
+    <mapping>
+      <stream_name>seat_no</stream_name>
+      <field_name>seat_no</field_name>
+      <date_mask/>
+    </mapping>
+    <mapping>
+      <stream_name>passenger_id</stream_name>
+      <field_name>passenger_id</field_name>
+      <date_mask/>
+    </mapping>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -928,103 +935,7 @@ left join ( select ticket_no , passenger_name from bookings.tickets) t on t. tic
       </output>
     </remotesteps>
     <GUI>
-      <xloc>832</xloc>
-      <yloc>160</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Запись ошибок в таблицу ошибок</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>dds</connection>
-    <schema>rejected</schema>
-    <table>dim_passenger</table>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>N</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>Y</return_keys>
-    <return_field>error_id</return_field>
-    <fields>
-      <field>
-        <column_name>passenger_name</column_name>
-        <stream_name>passenger_name</stream_name>
-      </field>
-      <field>
-        <column_name>flight_no</column_name>
-        <stream_name>flight_no</stream_name>
-      </field>
-      <field>
-        <column_name>ticket_no</column_name>
-        <stream_name>ticket_no</stream_name>
-      </field>
-      <field>
-        <column_name>seat_no</column_name>
-        <stream_name>seat_no</stream_name>
-      </field>
-      <field>
-        <column_name>costs</column_name>
-        <stream_name>amount</stream_name>
-      </field>
-      <field>
-        <column_name>tarif</column_name>
-        <stream_name>tarif_id</stream_name>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>864</xloc>
-      <yloc>368</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Data validator</name>
-    <type>Validator</type>
-    <description/>
-    <distribute>N</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <validate_all>N</validate_all>
-    <concat_errors>N</concat_errors>
-    <concat_separator>|</concat_separator>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>544</xloc>
+      <xloc>1032</xloc>
       <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
