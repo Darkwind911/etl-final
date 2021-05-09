@@ -546,7 +546,7 @@
     </hop>
     <hop>
       <from>Проверка данных</from>
-      <to>Загрузка данных в измерение</to>
+      <to>Загрузка данных в Stage</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -554,7 +554,116 @@
       <to>Запись ошибок в таблицу ошибок</to>
       <enabled>Y</enabled>
     </hop>
+    <hop>
+      <from>Загрузка данных в Stage</from>
+      <to>Загрузка данных в измерение</to>
+      <enabled>Y</enabled>
+    </hop>
   </order>
+  <step>
+    <name>Загрузка данных в Stage</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>dds</connection>
+    <schema>stage</schema>
+    <table>dim_airports</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>N</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>Y</return_keys>
+    <return_field>airport_id</return_field>
+    <fields>
+      <field>
+        <column_name>airport_code</column_name>
+        <stream_name>airport_code</stream_name>
+      </field>
+      <field>
+        <column_name>airport_name</column_name>
+        <stream_name>airport_name</stream_name>
+      </field>
+      <field>
+        <column_name>city</column_name>
+        <stream_name>city</stream_name>
+      </field>
+      <field>
+        <column_name>timezone</column_name>
+        <stream_name>timezone</stream_name>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>544</xloc>
+      <yloc>96</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Запись ошибок в таблицу ошибок</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>dds</connection>
+    <schema>rejected</schema>
+    <table>dim_airports</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>N</use_batch>
+    <specify_fields>N</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>Y</return_keys>
+    <return_field>error_id</return_field>
+    <fields>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>512</xloc>
+      <yloc>256</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
   <step>
     <name>Запрос данных из сорсовой базы</name>
     <type>TableInput</type>
@@ -684,66 +793,6 @@ FROM bookings.airports
     </remotesteps>
     <GUI>
       <xloc>112</xloc>
-      <yloc>96</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Загрузка данных в измерение</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>dds</connection>
-    <schema>dds</schema>
-    <table>dim_airports</table>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>N</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>Y</return_keys>
-    <return_field>airport_id</return_field>
-    <fields>
-      <field>
-        <column_name>airport_code</column_name>
-        <stream_name>airport_code</stream_name>
-      </field>
-      <field>
-        <column_name>airport_name</column_name>
-        <stream_name>airport_name</stream_name>
-      </field>
-      <field>
-        <column_name>city</column_name>
-        <stream_name>city</stream_name>
-      </field>
-      <field>
-        <column_name>timezone</column_name>
-        <stream_name>timezone</stream_name>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>576</xloc>
       <yloc>96</yloc>
       <draw>Y</draw>
     </GUI>
@@ -889,8 +938,8 @@ FROM bookings.airports
     </GUI>
   </step>
   <step>
-    <name>Запись ошибок в таблицу ошибок</name>
-    <type>TableOutput</type>
+    <name>Загрузка данных в измерение</name>
+    <type>PGBulkLoader</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -900,24 +949,38 @@ FROM bookings.airports
       <schema_name/>
     </partitioning>
     <connection>dds</connection>
-    <schema>rejected</schema>
+    <schema>dds</schema>
     <table>dim_airports</table>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>N</use_batch>
-    <specify_fields>N</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>Y</return_keys>
-    <return_field>error_id</return_field>
-    <fields>
-    </fields>
+    <load_action>INSERT</load_action>
+    <dbname_override/>
+    <enclosure>"</enclosure>
+    <delimiter>;</delimiter>
+    <stop_on_error>N</stop_on_error>
+    <mapping>
+      <stream_name>airport_code</stream_name>
+      <field_name>airport_code</field_name>
+      <date_mask/>
+    </mapping>
+    <mapping>
+      <stream_name>airport_name</stream_name>
+      <field_name>airport_name</field_name>
+      <date_mask/>
+    </mapping>
+    <mapping>
+      <stream_name>city</stream_name>
+      <field_name>city</field_name>
+      <date_mask/>
+    </mapping>
+    <mapping>
+      <stream_name>timezone</stream_name>
+      <field_name>timezone</field_name>
+      <date_mask/>
+    </mapping>
+    <mapping>
+      <stream_name>airport_id</stream_name>
+      <field_name>airport_id</field_name>
+      <date_mask/>
+    </mapping>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -927,8 +990,8 @@ FROM bookings.airports
       </output>
     </remotesteps>
     <GUI>
-      <xloc>576</xloc>
-      <yloc>224</yloc>
+      <xloc>720</xloc>
+      <yloc>96</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
