@@ -545,12 +545,17 @@
     </hop>
     <hop>
       <from>Data validator</from>
-      <to>Загрузка данных в измерение</to>
+      <to>Загрузка данных в Stage</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
       <from>Data validator</from>
       <to>Запись ошибок в таблицу ошибок</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Загрузка данных в Stage</from>
+      <to>Загрузка данных в измерение</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -695,6 +700,126 @@
     </GUI>
   </step>
   <step>
+    <name>Загрузка данных в Stage</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>dds</connection>
+    <schema>stage</schema>
+    <table>dim_aircrafts</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>N</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>Y</return_keys>
+    <return_field>aircraft_id</return_field>
+    <fields>
+      <field>
+        <column_name>aircraft_code</column_name>
+        <stream_name>aircraft_code</stream_name>
+      </field>
+      <field>
+        <column_name>model</column_name>
+        <stream_name>model</stream_name>
+      </field>
+      <field>
+        <column_name>aircraft_range</column_name>
+        <stream_name>range</stream_name>
+      </field>
+      <field>
+        <column_name>seats_total</column_name>
+        <stream_name>s_cnt</stream_name>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>608</xloc>
+      <yloc>96</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Запись ошибок в таблицу ошибок</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>dds</connection>
+    <schema>rejected</schema>
+    <table>dim_aircrafts</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>N</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>Y</return_keys>
+    <return_field>error_id</return_field>
+    <fields>
+      <field>
+        <column_name>aircraft_code</column_name>
+        <stream_name>aircraft_code</stream_name>
+      </field>
+      <field>
+        <column_name>model</column_name>
+        <stream_name>model</stream_name>
+      </field>
+      <field>
+        <column_name>aircraft_range</column_name>
+        <stream_name>range</stream_name>
+      </field>
+      <field>
+        <column_name>seats_total</column_name>
+        <stream_name>s_cnt</stream_name>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>624</xloc>
+      <yloc>272</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
     <name>Запрос данных из сорсовой базы</name>
     <type>TableInput</type>
     <description/>
@@ -832,7 +957,7 @@ group by aircraft_code ) s on a.aircraft_code =s.aircraft_code</sql>
   </step>
   <step>
     <name>Загрузка данных в измерение</name>
-    <type>TableOutput</type>
+    <type>PGBulkLoader</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -844,38 +969,36 @@ group by aircraft_code ) s on a.aircraft_code =s.aircraft_code</sql>
     <connection>dds</connection>
     <schema>dds</schema>
     <table>dim_aircrafts</table>
-    <commit>1000</commit>
-    <truncate>Y</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>N</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>Y</return_keys>
-    <return_field>aircraft_id</return_field>
-    <fields>
-      <field>
-        <column_name>aircraft_code</column_name>
-        <stream_name>aircraft_code</stream_name>
-      </field>
-      <field>
-        <column_name>model</column_name>
-        <stream_name>model</stream_name>
-      </field>
-      <field>
-        <column_name>aircraft_range</column_name>
-        <stream_name>range</stream_name>
-      </field>
-      <field>
-        <column_name>seats_total</column_name>
-        <stream_name>s_cnt</stream_name>
-      </field>
-    </fields>
+    <load_action>INSERT</load_action>
+    <dbname_override/>
+    <enclosure>"</enclosure>
+    <delimiter>;</delimiter>
+    <stop_on_error>N</stop_on_error>
+    <mapping>
+      <stream_name>aircraft_code</stream_name>
+      <field_name>aircraft_code</field_name>
+      <date_mask/>
+    </mapping>
+    <mapping>
+      <stream_name>model</stream_name>
+      <field_name>model</field_name>
+      <date_mask/>
+    </mapping>
+    <mapping>
+      <stream_name>aircraft_id</stream_name>
+      <field_name>aircraft_id</field_name>
+      <date_mask/>
+    </mapping>
+    <mapping>
+      <stream_name>seats_total</stream_name>
+      <field_name>s_cnt</field_name>
+      <date_mask/>
+    </mapping>
+    <mapping>
+      <stream_name>aircraft_range</stream_name>
+      <field_name>range</field_name>
+      <date_mask/>
+    </mapping>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -885,68 +1008,8 @@ group by aircraft_code ) s on a.aircraft_code =s.aircraft_code</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>608</xloc>
+      <xloc>808</xloc>
       <yloc>96</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Запись ошибок в таблицу ошибок</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>dds</connection>
-    <schema>rejected</schema>
-    <table>dim_aircrafts</table>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>N</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>Y</return_keys>
-    <return_field>error_id</return_field>
-    <fields>
-      <field>
-        <column_name>aircraft_code</column_name>
-        <stream_name>aircraft_code</stream_name>
-      </field>
-      <field>
-        <column_name>model</column_name>
-        <stream_name>model</stream_name>
-      </field>
-      <field>
-        <column_name>aircraft_range</column_name>
-        <stream_name>range</stream_name>
-      </field>
-      <field>
-        <column_name>seats_total</column_name>
-        <stream_name>s_cnt</stream_name>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>624</xloc>
-      <yloc>272</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
